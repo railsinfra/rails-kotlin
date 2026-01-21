@@ -4,12 +4,9 @@ package com.rails.api.services.async
 
 import com.rails.api.core.ClientOptions
 import com.rails.api.core.RequestOptions
-import com.rails.api.core.checkRequired
-import com.rails.api.core.handlers.emptyHandler
 import com.rails.api.core.handlers.errorBodyHandler
 import com.rails.api.core.handlers.errorHandler
 import com.rails.api.core.handlers.jsonHandler
-import com.rails.api.core.handlers.stringHandler
 import com.rails.api.core.http.HttpMethod
 import com.rails.api.core.http.HttpRequest
 import com.rails.api.core.http.HttpResponse
@@ -18,14 +15,8 @@ import com.rails.api.core.http.HttpResponseFor
 import com.rails.api.core.http.json
 import com.rails.api.core.http.parseable
 import com.rails.api.core.prepareAsync
-import com.rails.api.models.user.User
-import com.rails.api.models.user.UserCreateParams
-import com.rails.api.models.user.UserCreateWithListParams
-import com.rails.api.models.user.UserDeleteParams
-import com.rails.api.models.user.UserLoginParams
-import com.rails.api.models.user.UserLogoutParams
-import com.rails.api.models.user.UserRetrieveParams
-import com.rails.api.models.user.UserUpdateParams
+import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.users.UserCreateResponse
 
 class UserServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     UserServiceAsync {
@@ -39,42 +30,12 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): UserServiceAsync =
         UserServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
 
-    override suspend fun create(params: UserCreateParams, requestOptions: RequestOptions): User =
-        // post /user
+    override suspend fun create(
+        params: UserCreateParams,
+        requestOptions: RequestOptions,
+    ): UserCreateResponse =
+        // post /api/v1/users
         withRawResponse().create(params, requestOptions).parse()
-
-    override suspend fun retrieve(
-        params: UserRetrieveParams,
-        requestOptions: RequestOptions,
-    ): User =
-        // get /user/{username}
-        withRawResponse().retrieve(params, requestOptions).parse()
-
-    override suspend fun update(params: UserUpdateParams, requestOptions: RequestOptions) {
-        // put /user/{username}
-        withRawResponse().update(params, requestOptions)
-    }
-
-    override suspend fun delete(params: UserDeleteParams, requestOptions: RequestOptions) {
-        // delete /user/{username}
-        withRawResponse().delete(params, requestOptions)
-    }
-
-    override suspend fun createWithList(
-        params: UserCreateWithListParams,
-        requestOptions: RequestOptions,
-    ): User =
-        // post /user/createWithList
-        withRawResponse().createWithList(params, requestOptions).parse()
-
-    override suspend fun login(params: UserLoginParams, requestOptions: RequestOptions): String =
-        // get /user/login
-        withRawResponse().login(params, requestOptions).parse()
-
-    override suspend fun logout(params: UserLogoutParams, requestOptions: RequestOptions) {
-        // get /user/logout
-        withRawResponse().logout(params, requestOptions)
-    }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         UserServiceAsync.WithRawResponse {
@@ -89,18 +50,19 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
                 clientOptions.toBuilder().apply(modifier).build()
             )
 
-        private val createHandler: Handler<User> = jsonHandler<User>(clientOptions.jsonMapper)
+        private val createHandler: Handler<UserCreateResponse> =
+            jsonHandler<UserCreateResponse>(clientOptions.jsonMapper)
 
         override suspend fun create(
             params: UserCreateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<User> {
+        ): HttpResponseFor<UserCreateResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
                     .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user")
-                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
+                    .addPathSegments("api", "v1", "users")
+                    .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -113,151 +75,6 @@ class UserServiceAsyncImpl internal constructor(private val clientOptions: Clien
                             it.validate()
                         }
                     }
-            }
-        }
-
-        private val retrieveHandler: Handler<User> = jsonHandler<User>(clientOptions.jsonMapper)
-
-        override suspend fun retrieve(
-            params: UserRetrieveParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<User> {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("username", params.username())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user", params._pathParam(0))
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-        }
-
-        private val updateHandler: Handler<Void?> = emptyHandler()
-
-        override suspend fun update(
-            params: UserUpdateParams,
-            requestOptions: RequestOptions,
-        ): HttpResponse {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("existingUsername", params.existingUsername())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.PUT)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user", params._pathParam(0))
-                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response.use { updateHandler.handle(it) }
-            }
-        }
-
-        private val deleteHandler: Handler<Void?> = emptyHandler()
-
-        override suspend fun delete(
-            params: UserDeleteParams,
-            requestOptions: RequestOptions,
-        ): HttpResponse {
-            // We check here instead of in the params builder because this can be specified
-            // positionally or in the params class.
-            checkRequired("username", params.username())
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.DELETE)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user", params._pathParam(0))
-                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response.use { deleteHandler.handle(it) }
-            }
-        }
-
-        private val createWithListHandler: Handler<User> =
-            jsonHandler<User>(clientOptions.jsonMapper)
-
-        override suspend fun createWithList(
-            params: UserCreateWithListParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<User> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.POST)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user", "createWithList")
-                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response
-                    .use { createWithListHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation!!) {
-                            it.validate()
-                        }
-                    }
-            }
-        }
-
-        private val loginHandler: Handler<String> = stringHandler()
-
-        override suspend fun login(
-            params: UserLoginParams,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<String> {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user", "login")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response.use { loginHandler.handle(it) }
-            }
-        }
-
-        private val logoutHandler: Handler<Void?> = emptyHandler()
-
-        override suspend fun logout(
-            params: UserLogoutParams,
-            requestOptions: RequestOptions,
-        ): HttpResponse {
-            val request =
-                HttpRequest.builder()
-                    .method(HttpMethod.GET)
-                    .baseUrl(clientOptions.baseUrl())
-                    .addPathSegments("user", "logout")
-                    .build()
-                    .prepareAsync(clientOptions, params)
-            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
-            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
-            return errorHandler.handle(response).parseable {
-                response.use { logoutHandler.handle(it) }
             }
         }
     }

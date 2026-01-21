@@ -3,8 +3,8 @@
 package com.rails.api.client
 
 import com.rails.api.core.ClientOptions
-import com.rails.api.services.blocking.PetService
-import com.rails.api.services.blocking.StoreService
+import com.rails.api.services.blocking.AccountService
+import com.rails.api.services.blocking.TransactionService
 import com.rails.api.services.blocking.UserService
 
 /**
@@ -43,11 +43,11 @@ interface RailsClient {
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient
 
-    fun pet(): PetService
+    fun users(): UserService
 
-    fun store(): StoreService
+    fun accounts(): AccountService
 
-    fun user(): UserService
+    fun transactions(): TransactionService
 
     /**
      * Closes this client, relinquishing any underlying resources.
@@ -72,10 +72,10 @@ interface RailsClient {
          */
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient.WithRawResponse
 
-        fun pet(): PetService.WithRawResponse
+        fun users(): UserService.WithRawResponse
 
-        fun store(): StoreService.WithRawResponse
+        fun accounts(): AccountService.WithRawResponse
 
-        fun user(): UserService.WithRawResponse
+        fun transactions(): TransactionService.WithRawResponse
     }
 }

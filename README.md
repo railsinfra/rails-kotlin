@@ -36,18 +36,21 @@ This library requires Java 8 or later.
 ```kotlin
 import com.rails.api.client.RailsClient
 import com.rails.api.client.okhttp.RailsOkHttpClient
-import com.rails.api.models.pet.Pet
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.users.UserCreateResponse
 
 // Configures using the `rails.apiKey` and `rails.baseUrl` system properties
 // Or configures using the `RAILS_API_KEY` and `RAILS_BASE_URL` environment variables
 val client: RailsClient = RailsOkHttpClient.fromEnv()
 
-val params: Pet = Pet.builder()
-    .name("doggie")
-    .addPhotoUrl("string")
+val params: UserCreateParams = UserCreateParams.builder()
+    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
+    .email("dev@stainless.com")
+    .firstName("first_name")
+    .lastName("last_name")
+    .password("password")
     .build()
-val pet: Pet = client.pet().update(params)
+val user: UserCreateResponse = client.users().create(params)
 ```
 
 ## Client configuration
@@ -90,10 +93,10 @@ val client: RailsClient = RailsOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter    | System property | Environment variable | Required | Default value                           |
-| --------- | --------------- | -------------------- | -------- | --------------------------------------- |
-| `apiKey`  | `rails.apiKey`  | `RAILS_API_KEY`      | true     | -                                       |
-| `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://petstore3.swagger.io/api/v3"` |
+| Setter    | System property | Environment variable | Required | Default value             |
+| --------- | --------------- | -------------------- | -------- | ------------------------- |
+| `apiKey`  | `rails.apiKey`  | `RAILS_API_KEY`      | true     | -                         |
+| `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://api.rails.com"` |
 
 System properties take precedence over environment variables.
 
@@ -120,7 +123,7 @@ The `withOptions()` method does not affect the original client or service.
 
 To send a request to the Rails API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Kotlin class.
 
-For example, `client.pet().update(...)` should be called with an instance of `PetUpdateParams`, and it will return an instance of `Pet`.
+For example, `client.users().create(...)` should be called with an instance of `UserCreateParams`, and it will return an instance of `UserCreateResponse`.
 
 ## Immutability
 
@@ -137,18 +140,21 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```kotlin
 import com.rails.api.client.RailsClient
 import com.rails.api.client.okhttp.RailsOkHttpClient
-import com.rails.api.models.pet.Pet
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.users.UserCreateResponse
 
 // Configures using the `rails.apiKey` and `rails.baseUrl` system properties
 // Or configures using the `RAILS_API_KEY` and `RAILS_BASE_URL` environment variables
 val client: RailsClient = RailsOkHttpClient.fromEnv()
 
-val params: Pet = Pet.builder()
-    .name("doggie")
-    .addPhotoUrl("string")
+val params: UserCreateParams = UserCreateParams.builder()
+    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
+    .email("dev@stainless.com")
+    .firstName("first_name")
+    .lastName("last_name")
+    .password("password")
     .build()
-val pet: Pet = client.async().pet().update(params)
+val user: UserCreateResponse = client.async().users().create(params)
 ```
 
 Or create an asynchronous client from the beginning:
@@ -156,18 +162,21 @@ Or create an asynchronous client from the beginning:
 ```kotlin
 import com.rails.api.client.RailsClientAsync
 import com.rails.api.client.okhttp.RailsOkHttpClientAsync
-import com.rails.api.models.pet.Pet
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.users.UserCreateResponse
 
 // Configures using the `rails.apiKey` and `rails.baseUrl` system properties
 // Or configures using the `RAILS_API_KEY` and `RAILS_BASE_URL` environment variables
 val client: RailsClientAsync = RailsOkHttpClientAsync.fromEnv()
 
-val params: Pet = Pet.builder()
-    .name("doggie")
-    .addPhotoUrl("string")
+val params: UserCreateParams = UserCreateParams.builder()
+    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
+    .email("dev@stainless.com")
+    .firstName("first_name")
+    .lastName("last_name")
+    .password("password")
     .build()
-val pet: Pet = client.pet().update(params)
+val user: UserCreateResponse = client.users().create(params)
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods are [suspending](https://kotlinlang.org/docs/coroutines-guide.html).
@@ -181,25 +190,28 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```kotlin
 import com.rails.api.core.http.Headers
 import com.rails.api.core.http.HttpResponseFor
-import com.rails.api.models.pet.Pet
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.users.UserCreateResponse
 
-val params: Pet = Pet.builder()
-    .name("doggie")
-    .addPhotoUrl("string")
+val params: UserCreateParams = UserCreateParams.builder()
+    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
+    .email("dev@stainless.com")
+    .firstName("first_name")
+    .lastName("last_name")
+    .password("password")
     .build()
-val pet: HttpResponseFor<Pet> = client.pet().withRawResponse().update(params)
+val user: HttpResponseFor<UserCreateResponse> = client.users().withRawResponse().create(params)
 
-val statusCode: Int = pet.statusCode()
-val headers: Headers = pet.headers()
+val statusCode: Int = user.statusCode()
+val headers: Headers = user.headers()
 ```
 
 You can still deserialize the response into an instance of a Kotlin class if needed:
 
 ```kotlin
-import com.rails.api.models.pet.Pet
+import com.rails.api.models.users.UserCreateResponse
 
-val parsedPet: Pet = pet.parse()
+val parsedUser: UserCreateResponse = user.parse()
 ```
 
 ## Error handling
@@ -297,9 +309,9 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```kotlin
-import com.rails.api.models.pet.Pet
+import com.rails.api.models.users.UserCreateResponse
 
-val pet: Pet = client.pet().update(
+val user: UserCreateResponse = client.users().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
 )
 ```
@@ -404,9 +416,9 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```kotlin
 import com.rails.api.core.JsonValue
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.models.users.UserCreateParams
 
-val params: PetUpdateParams = PetUpdateParams.builder()
+val params: UserCreateParams = UserCreateParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
@@ -418,14 +430,15 @@ These can be accessed on the built object later using the `_additionalHeaders()`
 To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](rails-kotlin-core/src/main/kotlin/com/rails/api/core/Values.kt) object to its setter:
 
 ```kotlin
-import com.rails.api.models.pet.Pet
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.core.JsonValue
+import com.rails.api.models.users.UserCreateParams
 
-val params: PetUpdateParams = PetUpdateParams.builder()
-    .pet(Pet.builder()
-        .name("doggie")
-        .addPhotoUrl("string")
-        .build())
+val params: UserCreateParams = UserCreateParams.builder()
+    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
+    .email(JsonValue.from(42))
+    .firstName("first_name")
+    .lastName("last_name")
+    .password("password")
     .build()
 ```
 
@@ -470,15 +483,14 @@ To forcibly omit a required parameter or property, pass [`JsonMissing`](rails-ko
 
 ```kotlin
 import com.rails.api.core.JsonMissing
-import com.rails.api.models.pet.Pet
-import com.rails.api.models.pet.PetUpdateParams
+import com.rails.api.models.users.UserCreateParams
 
-val params: PetUpdateParams = PetUpdateParams.builder()
-    .pet(Pet.builder()
-        .name("doggie")
-        .addPhotoUrl("string")
-        .build())
-    .name(JsonMissing.of())
+val params: UserCreateParams = UserCreateParams.builder()
+    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
+    .firstName("first_name")
+    .lastName("last_name")
+    .password("password")
+    .email(JsonMissing.of())
     .build()
 ```
 
@@ -492,7 +504,7 @@ import com.rails.api.core.JsonNull
 import com.rails.api.core.JsonNumber
 import com.rails.api.core.JsonValue
 
-val additionalProperties: Map<String, JsonValue> = client.pet().update(params)._additionalProperties()
+val additionalProperties: Map<String, JsonValue> = client.users().create(params)._additionalProperties()
 val secretPropertyValue: JsonValue = additionalProperties.get("secretProperty")
 
 val result = when (secretPropertyValue) {
@@ -509,19 +521,19 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 ```kotlin
 import com.rails.api.core.JsonField
 
-val field: JsonField<Any> = client.pet().update(params)._field()
+val email: JsonField<String> = client.users().create(params)._email()
 
-if (field.isMissing()) {
+if (email.isMissing()) {
   // The property is absent from the JSON response
-} else if (field.isNull()) {
+} else if (email.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  val jsonString: String? = field.asString();
+  val jsonString: String? = email.asString();
 
   // Try to deserialize into a custom type
-  val myObject: MyClass = field.asUnknown()!!.convert(MyClass::class.java)
+  val myObject: MyClass = email.asUnknown()!!.convert(MyClass::class.java)
 }
 ```
 
@@ -534,17 +546,17 @@ By default, the SDK will not throw an exception in this case. It will throw [`Ra
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```kotlin
-import com.rails.api.models.pet.Pet
+import com.rails.api.models.users.UserCreateResponse
 
-val pet: Pet = client.pet().update(params).validate()
+val user: UserCreateResponse = client.users().create(params).validate()
 ```
 
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```kotlin
-import com.rails.api.models.pet.Pet
+import com.rails.api.models.users.UserCreateResponse
 
-val pet: Pet = client.pet().update(
+val user: UserCreateResponse = client.users().create(
   params, RequestOptions.builder().responseValidation(true).build()
 )
 ```

@@ -103,7 +103,7 @@ private constructor(
     /**
      * The base URL to use for every request.
      *
-     * Defaults to the production environment: `https://petstore3.swagger.io/api/v3`.
+     * Defaults to the production environment: `https://api.rails.com`.
      */
     fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
 
@@ -111,7 +111,7 @@ private constructor(
 
     companion object {
 
-        const val PRODUCTION_URL = "https://petstore3.swagger.io/api/v3"
+        const val PRODUCTION_URL = "https://api.rails.com"
 
         /**
          * Returns a mutable builder for constructing an instance of [ClientOptions].
@@ -216,7 +216,7 @@ private constructor(
         /**
          * The base URL to use for every request.
          *
-         * Defaults to the production environment: `https://petstore3.swagger.io/api/v3`.
+         * Defaults to the production environment: `https://api.rails.com`.
          */
         fun baseUrl(baseUrl: String?) = apply { this.baseUrl = baseUrl }
 
@@ -353,10 +353,10 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter   |System property|Environment variable|Required|Default value                          |
-         * |---------|---------------|--------------------|--------|---------------------------------------|
-         * |`apiKey` |`rails.apiKey` |`RAILS_API_KEY`     |true    |-                                      |
-         * |`baseUrl`|`rails.baseUrl`|`RAILS_BASE_URL`    |true    |`"https://petstore3.swagger.io/api/v3"`|
+         * | Setter    | System property | Environment variable | Required | Default value             |
+         * |-----------|-----------------|----------------------|----------|---------------------------|
+         * | `apiKey`  | `rails.apiKey`  | `RAILS_API_KEY`      | true     | -                         |
+         * | `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://api.rails.com"` |
          *
          * System properties take precedence over environment variables.
          */
@@ -398,7 +398,7 @@ private constructor(
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             apiKey.let {
                 if (!it.isEmpty()) {
-                    headers.put("api_key", it)
+                    headers.put("X-API-Key", it)
                 }
             }
             headers.replaceAll(this.headers.build())
