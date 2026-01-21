@@ -11,7 +11,7 @@ configure<PublishingExtension> {
             pom {
                 name.set("Rails API")
                 description.set("Rails public API for founders")
-                url.set("https://www.github.com/stainless-sdks/rails-kotlin")
+                url.set("https://www.github.com/sibabale/rails-kotlin")
 
                 licenses {
                     license {
@@ -26,9 +26,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/rails-kotlin.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/rails-kotlin.git")
-                    url.set("https://github.com/stainless-sdks/rails-kotlin")
+                    connection.set("scm:git:git://github.com/sibabale/rails-kotlin.git")
+                    developerConnection.set("scm:git:git://github.com/sibabale/rails-kotlin.git")
+                    url.set("https://github.com/sibabale/rails-kotlin")
                 }
 
                 versionMapping {
