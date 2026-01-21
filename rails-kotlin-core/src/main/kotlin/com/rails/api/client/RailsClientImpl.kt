@@ -4,10 +4,10 @@ package com.rails.api.client
 
 import com.rails.api.core.ClientOptions
 import com.rails.api.core.getPackageVersion
-import com.rails.api.services.blocking.PetService
-import com.rails.api.services.blocking.PetServiceImpl
-import com.rails.api.services.blocking.StoreService
-import com.rails.api.services.blocking.StoreServiceImpl
+import com.rails.api.services.blocking.AccountService
+import com.rails.api.services.blocking.AccountServiceImpl
+import com.rails.api.services.blocking.TransactionService
+import com.rails.api.services.blocking.TransactionServiceImpl
 import com.rails.api.services.blocking.UserService
 import com.rails.api.services.blocking.UserServiceImpl
 
@@ -28,11 +28,13 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
         WithRawResponseImpl(clientOptions)
     }
 
-    private val pet: PetService by lazy { PetServiceImpl(clientOptionsWithUserAgent) }
+    private val users: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
 
-    private val store: StoreService by lazy { StoreServiceImpl(clientOptionsWithUserAgent) }
+    private val accounts: AccountService by lazy { AccountServiceImpl(clientOptionsWithUserAgent) }
 
-    private val user: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
+    private val transactions: TransactionService by lazy {
+        TransactionServiceImpl(clientOptionsWithUserAgent)
+    }
 
     override fun async(): RailsClientAsync = async
 
@@ -41,27 +43,27 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient =
         RailsClientImpl(clientOptions.toBuilder().apply(modifier).build())
 
-    override fun pet(): PetService = pet
+    override fun users(): UserService = users
 
-    override fun store(): StoreService = store
+    override fun accounts(): AccountService = accounts
 
-    override fun user(): UserService = user
+    override fun transactions(): TransactionService = transactions
 
     override fun close() = clientOptions.close()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RailsClient.WithRawResponse {
 
-        private val pet: PetService.WithRawResponse by lazy {
-            PetServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
-        private val store: StoreService.WithRawResponse by lazy {
-            StoreServiceImpl.WithRawResponseImpl(clientOptions)
-        }
-
-        private val user: UserService.WithRawResponse by lazy {
+        private val users: UserService.WithRawResponse by lazy {
             UserServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val accounts: AccountService.WithRawResponse by lazy {
+            AccountServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val transactions: TransactionService.WithRawResponse by lazy {
+            TransactionServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         override fun withOptions(
@@ -69,10 +71,10 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
         ): RailsClient.WithRawResponse =
             RailsClientImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
-        override fun pet(): PetService.WithRawResponse = pet
+        override fun users(): UserService.WithRawResponse = users
 
-        override fun store(): StoreService.WithRawResponse = store
+        override fun accounts(): AccountService.WithRawResponse = accounts
 
-        override fun user(): UserService.WithRawResponse = user
+        override fun transactions(): TransactionService.WithRawResponse = transactions
     }
 }
