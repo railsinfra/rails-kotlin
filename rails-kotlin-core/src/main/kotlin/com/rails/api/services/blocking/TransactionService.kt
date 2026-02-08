@@ -8,6 +8,8 @@ import com.rails.api.core.RequestOptions
 import com.rails.api.core.http.HttpResponseFor
 import com.rails.api.models.transactions.TransactionListByAccountParams
 import com.rails.api.models.transactions.TransactionListByAccountResponse
+import com.rails.api.models.transactions.TransactionListParams
+import com.rails.api.models.transactions.TransactionListResponse
 import com.rails.api.models.transactions.TransactionRetrieveParams
 import com.rails.api.models.transactions.TransactionRetrieveResponse
 
@@ -41,6 +43,12 @@ interface TransactionService {
     /** @see retrieve */
     fun retrieve(id: String, requestOptions: RequestOptions): TransactionRetrieveResponse =
         retrieve(id, TransactionRetrieveParams.none(), requestOptions)
+
+    /** List transactions by organization */
+    fun list(
+        params: TransactionListParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): TransactionListResponse
 
     /** List account transactions */
     fun listByAccount(
@@ -103,6 +111,16 @@ interface TransactionService {
             requestOptions: RequestOptions,
         ): HttpResponseFor<TransactionRetrieveResponse> =
             retrieve(id, TransactionRetrieveParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `get /api/v1/transactions`, but is otherwise the same as
+         * [TransactionService.list].
+         */
+        @MustBeClosed
+        fun list(
+            params: TransactionListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<TransactionListResponse>
 
         /**
          * Returns a raw HTTP response for `get /api/v1/accounts/{account_id}/transactions`, but is
