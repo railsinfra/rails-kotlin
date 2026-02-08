@@ -6,12 +6,11 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.rails.api.core.ClientOptions
 import com.rails.api.core.RequestOptions
 import com.rails.api.core.http.HttpResponseFor
+import com.rails.api.models.accounts.Transaction
 import com.rails.api.models.transactions.TransactionListByAccountParams
-import com.rails.api.models.transactions.TransactionListByAccountResponse
 import com.rails.api.models.transactions.TransactionListParams
 import com.rails.api.models.transactions.TransactionListResponse
 import com.rails.api.models.transactions.TransactionRetrieveParams
-import com.rails.api.models.transactions.TransactionRetrieveResponse
 
 interface TransactionService {
 
@@ -32,16 +31,16 @@ interface TransactionService {
         id: String,
         params: TransactionRetrieveParams = TransactionRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): TransactionRetrieveResponse = retrieve(params.toBuilder().id(id).build(), requestOptions)
+    ): Transaction = retrieve(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see retrieve */
     fun retrieve(
         params: TransactionRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): TransactionRetrieveResponse
+    ): Transaction
 
     /** @see retrieve */
-    fun retrieve(id: String, requestOptions: RequestOptions): TransactionRetrieveResponse =
+    fun retrieve(id: String, requestOptions: RequestOptions): Transaction =
         retrieve(id, TransactionRetrieveParams.none(), requestOptions)
 
     /** List transactions by organization */
@@ -55,20 +54,17 @@ interface TransactionService {
         accountId: String,
         params: TransactionListByAccountParams = TransactionListByAccountParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<TransactionListByAccountResponse> =
+    ): List<Transaction> =
         listByAccount(params.toBuilder().accountId(accountId).build(), requestOptions)
 
     /** @see listByAccount */
     fun listByAccount(
         params: TransactionListByAccountParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<TransactionListByAccountResponse>
+    ): List<Transaction>
 
     /** @see listByAccount */
-    fun listByAccount(
-        accountId: String,
-        requestOptions: RequestOptions,
-    ): List<TransactionListByAccountResponse> =
+    fun listByAccount(accountId: String, requestOptions: RequestOptions): List<Transaction> =
         listByAccount(accountId, TransactionListByAccountParams.none(), requestOptions)
 
     /**
@@ -94,7 +90,7 @@ interface TransactionService {
             id: String,
             params: TransactionRetrieveParams = TransactionRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<TransactionRetrieveResponse> =
+        ): HttpResponseFor<Transaction> =
             retrieve(params.toBuilder().id(id).build(), requestOptions)
 
         /** @see retrieve */
@@ -102,14 +98,11 @@ interface TransactionService {
         fun retrieve(
             params: TransactionRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<TransactionRetrieveResponse>
+        ): HttpResponseFor<Transaction>
 
         /** @see retrieve */
         @MustBeClosed
-        fun retrieve(
-            id: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<TransactionRetrieveResponse> =
+        fun retrieve(id: String, requestOptions: RequestOptions): HttpResponseFor<Transaction> =
             retrieve(id, TransactionRetrieveParams.none(), requestOptions)
 
         /**
@@ -131,7 +124,7 @@ interface TransactionService {
             accountId: String,
             params: TransactionListByAccountParams = TransactionListByAccountParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<TransactionListByAccountResponse>> =
+        ): HttpResponseFor<List<Transaction>> =
             listByAccount(params.toBuilder().accountId(accountId).build(), requestOptions)
 
         /** @see listByAccount */
@@ -139,14 +132,14 @@ interface TransactionService {
         fun listByAccount(
             params: TransactionListByAccountParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<TransactionListByAccountResponse>>
+        ): HttpResponseFor<List<Transaction>>
 
         /** @see listByAccount */
         @MustBeClosed
         fun listByAccount(
             accountId: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<List<TransactionListByAccountResponse>> =
+        ): HttpResponseFor<List<Transaction>> =
             listByAccount(accountId, TransactionListByAccountParams.none(), requestOptions)
     }
 }

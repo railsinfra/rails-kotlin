@@ -6,20 +6,16 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.rails.api.core.ClientOptions
 import com.rails.api.core.RequestOptions
 import com.rails.api.core.http.HttpResponseFor
+import com.rails.api.models.accounts.Account
 import com.rails.api.models.accounts.AccountCloseParams
-import com.rails.api.models.accounts.AccountCloseResponse
 import com.rails.api.models.accounts.AccountCreateParams
-import com.rails.api.models.accounts.AccountCreateResponse
 import com.rails.api.models.accounts.AccountDepositParams
 import com.rails.api.models.accounts.AccountDepositResponse
 import com.rails.api.models.accounts.AccountListParams
-import com.rails.api.models.accounts.AccountListResponse
 import com.rails.api.models.accounts.AccountRetrieveParams
-import com.rails.api.models.accounts.AccountRetrieveResponse
 import com.rails.api.models.accounts.AccountTransferParams
 import com.rails.api.models.accounts.AccountTransferResponse
 import com.rails.api.models.accounts.AccountUpdateStatusParams
-import com.rails.api.models.accounts.AccountUpdateStatusResponse
 import com.rails.api.models.accounts.AccountWithdrawParams
 import com.rails.api.models.accounts.AccountWithdrawResponse
 
@@ -41,46 +37,46 @@ interface AccountServiceAsync {
     suspend fun create(
         params: AccountCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountCreateResponse
+    ): Account
 
     /** Retrieve account */
     suspend fun retrieve(
         id: String,
         params: AccountRetrieveParams = AccountRetrieveParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountRetrieveResponse = retrieve(params.toBuilder().id(id).build(), requestOptions)
+    ): Account = retrieve(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see retrieve */
     suspend fun retrieve(
         params: AccountRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountRetrieveResponse
+    ): Account
 
     /** @see retrieve */
-    suspend fun retrieve(id: String, requestOptions: RequestOptions): AccountRetrieveResponse =
+    suspend fun retrieve(id: String, requestOptions: RequestOptions): Account =
         retrieve(id, AccountRetrieveParams.none(), requestOptions)
 
     /** List accounts */
     suspend fun list(
         params: AccountListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): List<AccountListResponse>
+    ): List<Account>
 
     /** Close account */
     suspend fun close(
         id: String,
         params: AccountCloseParams = AccountCloseParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountCloseResponse = close(params.toBuilder().id(id).build(), requestOptions)
+    ): Account = close(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see close */
     suspend fun close(
         params: AccountCloseParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountCloseResponse
+    ): Account
 
     /** @see close */
-    suspend fun close(id: String, requestOptions: RequestOptions): AccountCloseResponse =
+    suspend fun close(id: String, requestOptions: RequestOptions): Account =
         close(id, AccountCloseParams.none(), requestOptions)
 
     /** Deposit into account */
@@ -114,19 +110,16 @@ interface AccountServiceAsync {
         id: String,
         params: AccountUpdateStatusParams = AccountUpdateStatusParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountUpdateStatusResponse = updateStatus(params.toBuilder().id(id).build(), requestOptions)
+    ): Account = updateStatus(params.toBuilder().id(id).build(), requestOptions)
 
     /** @see updateStatus */
     suspend fun updateStatus(
         params: AccountUpdateStatusParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): AccountUpdateStatusResponse
+    ): Account
 
     /** @see updateStatus */
-    suspend fun updateStatus(
-        id: String,
-        requestOptions: RequestOptions,
-    ): AccountUpdateStatusResponse =
+    suspend fun updateStatus(id: String, requestOptions: RequestOptions): Account =
         updateStatus(id, AccountUpdateStatusParams.none(), requestOptions)
 
     /** Withdraw from account */
@@ -164,7 +157,7 @@ interface AccountServiceAsync {
         suspend fun create(
             params: AccountCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountCreateResponse>
+        ): HttpResponseFor<Account>
 
         /**
          * Returns a raw HTTP response for `get /api/v1/accounts/{id}`, but is otherwise the same as
@@ -175,22 +168,18 @@ interface AccountServiceAsync {
             id: String,
             params: AccountRetrieveParams = AccountRetrieveParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountRetrieveResponse> =
-            retrieve(params.toBuilder().id(id).build(), requestOptions)
+        ): HttpResponseFor<Account> = retrieve(params.toBuilder().id(id).build(), requestOptions)
 
         /** @see retrieve */
         @MustBeClosed
         suspend fun retrieve(
             params: AccountRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountRetrieveResponse>
+        ): HttpResponseFor<Account>
 
         /** @see retrieve */
         @MustBeClosed
-        suspend fun retrieve(
-            id: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<AccountRetrieveResponse> =
+        suspend fun retrieve(id: String, requestOptions: RequestOptions): HttpResponseFor<Account> =
             retrieve(id, AccountRetrieveParams.none(), requestOptions)
 
         /**
@@ -201,7 +190,7 @@ interface AccountServiceAsync {
         suspend fun list(
             params: AccountListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<List<AccountListResponse>>
+        ): HttpResponseFor<List<Account>>
 
         /**
          * Returns a raw HTTP response for `delete /api/v1/accounts/{id}`, but is otherwise the same
@@ -212,22 +201,18 @@ interface AccountServiceAsync {
             id: String,
             params: AccountCloseParams = AccountCloseParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountCloseResponse> =
-            close(params.toBuilder().id(id).build(), requestOptions)
+        ): HttpResponseFor<Account> = close(params.toBuilder().id(id).build(), requestOptions)
 
         /** @see close */
         @MustBeClosed
         suspend fun close(
             params: AccountCloseParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountCloseResponse>
+        ): HttpResponseFor<Account>
 
         /** @see close */
         @MustBeClosed
-        suspend fun close(
-            id: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<AccountCloseResponse> =
+        suspend fun close(id: String, requestOptions: RequestOptions): HttpResponseFor<Account> =
             close(id, AccountCloseParams.none(), requestOptions)
 
         /**
@@ -277,7 +262,7 @@ interface AccountServiceAsync {
             id: String,
             params: AccountUpdateStatusParams = AccountUpdateStatusParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountUpdateStatusResponse> =
+        ): HttpResponseFor<Account> =
             updateStatus(params.toBuilder().id(id).build(), requestOptions)
 
         /** @see updateStatus */
@@ -285,14 +270,14 @@ interface AccountServiceAsync {
         suspend fun updateStatus(
             params: AccountUpdateStatusParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<AccountUpdateStatusResponse>
+        ): HttpResponseFor<Account>
 
         /** @see updateStatus */
         @MustBeClosed
         suspend fun updateStatus(
             id: String,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<AccountUpdateStatusResponse> =
+        ): HttpResponseFor<Account> =
             updateStatus(id, AccountUpdateStatusParams.none(), requestOptions)
 
         /**
