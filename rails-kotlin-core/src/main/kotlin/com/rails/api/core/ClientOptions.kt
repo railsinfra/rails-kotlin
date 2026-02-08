@@ -103,7 +103,7 @@ private constructor(
     /**
      * The base URL to use for every request.
      *
-     * Defaults to the production environment: `https://api.rails.com`.
+     * Defaults to the production environment: `https://api.railsinfra.com`.
      */
     fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
 
@@ -111,7 +111,7 @@ private constructor(
 
     companion object {
 
-        const val PRODUCTION_URL = "https://api.rails.com"
+        const val PRODUCTION_URL = "https://api.railsinfra.com"
 
         /**
          * Returns a mutable builder for constructing an instance of [ClientOptions].
@@ -216,7 +216,7 @@ private constructor(
         /**
          * The base URL to use for every request.
          *
-         * Defaults to the production environment: `https://api.rails.com`.
+         * Defaults to the production environment: `https://api.railsinfra.com`.
          */
         fun baseUrl(baseUrl: String?) = apply { this.baseUrl = baseUrl }
 
@@ -356,7 +356,7 @@ private constructor(
          * | Setter    | System property | Environment variable | Required | Default value             |
          * |-----------|-----------------|----------------------|----------|---------------------------|
          * | `apiKey`  | `rails.apiKey`  | `RAILS_API_KEY`      | true     | -                         |
-         * | `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://api.rails.com"` |
+         * | `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://api.railsinfra.com"` |
          *
          * System properties take precedence over environment variables.
          */
