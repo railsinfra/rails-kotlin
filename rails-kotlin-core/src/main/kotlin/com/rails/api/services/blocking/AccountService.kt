@@ -19,6 +19,7 @@ import com.rails.api.models.accounts.AccountUpdateStatusParams
 import com.rails.api.models.accounts.AccountWithdrawParams
 import com.rails.api.models.accounts.AccountWithdrawResponse
 
+/** Accounts */
 interface AccountService {
 
     /**

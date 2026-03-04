@@ -29,6 +29,7 @@ import com.rails.api.models.accounts.AccountUpdateStatusParams
 import com.rails.api.models.accounts.AccountWithdrawParams
 import com.rails.api.models.accounts.AccountWithdrawResponse
 
+/** Accounts */
 class AccountServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     AccountService {
 

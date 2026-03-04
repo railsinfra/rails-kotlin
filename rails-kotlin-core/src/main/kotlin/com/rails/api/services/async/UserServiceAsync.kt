@@ -9,6 +9,7 @@ import com.rails.api.core.http.HttpResponseFor
 import com.rails.api.models.users.UserCreateParams
 import com.rails.api.models.users.UserCreateResponse
 
+/** Users */
 interface UserServiceAsync {
 
     /**
