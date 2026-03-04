@@ -21,6 +21,7 @@ import com.rails.api.models.transactions.TransactionListParams
 import com.rails.api.models.transactions.TransactionListResponse
 import com.rails.api.models.transactions.TransactionRetrieveParams
 
+/** Transactions */
 class TransactionServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     TransactionService {
 

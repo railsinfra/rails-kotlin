@@ -12,6 +12,7 @@ import com.rails.api.models.transactions.TransactionListParams
 import com.rails.api.models.transactions.TransactionListResponse
 import com.rails.api.models.transactions.TransactionRetrieveParams
 
+/** Transactions */
 interface TransactionService {
 
     /**

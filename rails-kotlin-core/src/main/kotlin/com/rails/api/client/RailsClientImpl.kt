@@ -43,10 +43,13 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient =
         RailsClientImpl(clientOptions.toBuilder().apply(modifier).build())
 
+    /** Users */
     override fun users(): UserService = users
 
+    /** Accounts */
     override fun accounts(): AccountService = accounts
 
+    /** Transactions */
     override fun transactions(): TransactionService = transactions
 
     override fun close() = clientOptions.close()
@@ -71,10 +74,13 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
         ): RailsClient.WithRawResponse =
             RailsClientImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
 
+        /** Users */
         override fun users(): UserService.WithRawResponse = users
 
+        /** Accounts */
         override fun accounts(): AccountService.WithRawResponse = accounts
 
+        /** Transactions */
         override fun transactions(): TransactionService.WithRawResponse = transactions
     }
 }

@@ -18,6 +18,7 @@ import com.rails.api.core.prepareAsync
 import com.rails.api.models.users.UserCreateParams
 import com.rails.api.models.users.UserCreateResponse
 
+/** Users */
 class UserServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     UserServiceAsync {
 
