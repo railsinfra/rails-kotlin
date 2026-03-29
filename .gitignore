@@ -1,6 +1,7 @@
 .prism.log
 .gradle
 .idea
+.settings/
 .kotlin
 build/
 codegen.log
