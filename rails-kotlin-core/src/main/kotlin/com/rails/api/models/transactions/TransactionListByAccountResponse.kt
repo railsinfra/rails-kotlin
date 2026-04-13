@@ -1,6 +1,6 @@
 // File generated from our OpenAPI spec by Stainless.
 
-package com.rails.api.models
+package com.rails.api.models.transactions
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
@@ -17,7 +17,7 @@ import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 
-class Transaction
+class TransactionListByAccountResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
@@ -284,7 +284,8 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [Transaction].
+         * Returns a mutable builder for constructing an instance of
+         * [TransactionListByAccountResponse].
          *
          * The following fields are required:
          * ```kotlin
@@ -302,7 +303,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [Transaction]. */
+    /** A builder for [TransactionListByAccountResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -320,22 +321,24 @@ private constructor(
         private var referenceId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(transaction: Transaction) = apply {
-            id = transaction.id
-            accountId = transaction.accountId
-            amount = transaction.amount
-            balanceAfter = transaction.balanceAfter
-            createdAt = transaction.createdAt
-            currency = transaction.currency
-            status = transaction.status
-            transactionType = transaction.transactionType
-            updatedAt = transaction.updatedAt
-            description = transaction.description
-            externalRecipientId = transaction.externalRecipientId
-            recipientAccountId = transaction.recipientAccountId
-            referenceId = transaction.referenceId
-            additionalProperties = transaction.additionalProperties.toMutableMap()
-        }
+        internal fun from(transactionListByAccountResponse: TransactionListByAccountResponse) =
+            apply {
+                id = transactionListByAccountResponse.id
+                accountId = transactionListByAccountResponse.accountId
+                amount = transactionListByAccountResponse.amount
+                balanceAfter = transactionListByAccountResponse.balanceAfter
+                createdAt = transactionListByAccountResponse.createdAt
+                currency = transactionListByAccountResponse.currency
+                status = transactionListByAccountResponse.status
+                transactionType = transactionListByAccountResponse.transactionType
+                updatedAt = transactionListByAccountResponse.updatedAt
+                description = transactionListByAccountResponse.description
+                externalRecipientId = transactionListByAccountResponse.externalRecipientId
+                recipientAccountId = transactionListByAccountResponse.recipientAccountId
+                referenceId = transactionListByAccountResponse.referenceId
+                additionalProperties =
+                    transactionListByAccountResponse.additionalProperties.toMutableMap()
+            }
 
         fun id(id: String) = id(JsonField.of(id))
 
@@ -507,7 +510,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [Transaction].
+         * Returns an immutable instance of [TransactionListByAccountResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -526,8 +529,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Transaction =
-            Transaction(
+        fun build(): TransactionListByAccountResponse =
+            TransactionListByAccountResponse(
                 checkRequired("id", id),
                 checkRequired("accountId", accountId),
                 checkRequired("amount", amount),
@@ -547,7 +550,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Transaction = apply {
+    fun validate(): TransactionListByAccountResponse = apply {
         if (validated) {
             return@apply
         }
@@ -883,7 +886,7 @@ private constructor(
             return true
         }
 
-        return other is Transaction &&
+        return other is TransactionListByAccountResponse &&
             id == other.id &&
             accountId == other.accountId &&
             amount == other.amount &&
@@ -922,5 +925,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Transaction{id=$id, accountId=$accountId, amount=$amount, balanceAfter=$balanceAfter, createdAt=$createdAt, currency=$currency, status=$status, transactionType=$transactionType, updatedAt=$updatedAt, description=$description, externalRecipientId=$externalRecipientId, recipientAccountId=$recipientAccountId, referenceId=$referenceId, additionalProperties=$additionalProperties}"
+        "TransactionListByAccountResponse{id=$id, accountId=$accountId, amount=$amount, balanceAfter=$balanceAfter, createdAt=$createdAt, currency=$currency, status=$status, transactionType=$transactionType, updatedAt=$updatedAt, description=$description, externalRecipientId=$externalRecipientId, recipientAccountId=$recipientAccountId, referenceId=$referenceId, additionalProperties=$additionalProperties}"
 }

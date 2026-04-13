@@ -36,21 +36,17 @@ This library requires Java 8 or later.
 ```kotlin
 import com.rails.api.client.RailsClient
 import com.rails.api.client.okhttp.RailsOkHttpClient
-import com.rails.api.models.users.UserCreateParams
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateParams
+import com.rails.api.models.accounts.AccountCreateResponse
 
 // Configures using the `rails.apiKey` and `rails.baseUrl` system properties
 // Or configures using the `RAILS_API_KEY` and `RAILS_BASE_URL` environment variables
 val client: RailsClient = RailsOkHttpClient.fromEnv()
 
-val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
-    .email("jane@example.com")
-    .firstName("Jane")
-    .lastName("Doe")
-    .password("your-secure-password")
+val params: AccountCreateParams = AccountCreateParams.builder()
+    .accountType(AccountCreateParams.AccountType.CHECKING)
     .build()
-val user: UserCreateResponse = client.users().create(params)
+val account: AccountCreateResponse = client.accounts().create(params)
 ```
 
 ## Client configuration
@@ -123,7 +119,7 @@ The `withOptions()` method does not affect the original client or service.
 
 To send a request to the Rails API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Kotlin class.
 
-For example, `client.users().create(...)` should be called with an instance of `UserCreateParams`, and it will return an instance of `UserCreateResponse`.
+For example, `client.accounts().create(...)` should be called with an instance of `AccountCreateParams`, and it will return an instance of `AccountCreateResponse`.
 
 ## Immutability
 
@@ -140,21 +136,17 @@ The default client is synchronous. To switch to asynchronous execution, call the
 ```kotlin
 import com.rails.api.client.RailsClient
 import com.rails.api.client.okhttp.RailsOkHttpClient
-import com.rails.api.models.users.UserCreateParams
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateParams
+import com.rails.api.models.accounts.AccountCreateResponse
 
 // Configures using the `rails.apiKey` and `rails.baseUrl` system properties
 // Or configures using the `RAILS_API_KEY` and `RAILS_BASE_URL` environment variables
 val client: RailsClient = RailsOkHttpClient.fromEnv()
 
-val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
-    .email("jane@example.com")
-    .firstName("Jane")
-    .lastName("Doe")
-    .password("your-secure-password")
+val params: AccountCreateParams = AccountCreateParams.builder()
+    .accountType(AccountCreateParams.AccountType.CHECKING)
     .build()
-val user: UserCreateResponse = client.async().users().create(params)
+val account: AccountCreateResponse = client.async().accounts().create(params)
 ```
 
 Or create an asynchronous client from the beginning:
@@ -162,21 +154,17 @@ Or create an asynchronous client from the beginning:
 ```kotlin
 import com.rails.api.client.RailsClientAsync
 import com.rails.api.client.okhttp.RailsOkHttpClientAsync
-import com.rails.api.models.users.UserCreateParams
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateParams
+import com.rails.api.models.accounts.AccountCreateResponse
 
 // Configures using the `rails.apiKey` and `rails.baseUrl` system properties
 // Or configures using the `RAILS_API_KEY` and `RAILS_BASE_URL` environment variables
 val client: RailsClientAsync = RailsOkHttpClientAsync.fromEnv()
 
-val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
-    .email("jane@example.com")
-    .firstName("Jane")
-    .lastName("Doe")
-    .password("your-secure-password")
+val params: AccountCreateParams = AccountCreateParams.builder()
+    .accountType(AccountCreateParams.AccountType.CHECKING)
     .build()
-val user: UserCreateResponse = client.users().create(params)
+val account: AccountCreateResponse = client.accounts().create(params)
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods are [suspending](https://kotlinlang.org/docs/coroutines-guide.html).
@@ -190,28 +178,24 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 ```kotlin
 import com.rails.api.core.http.Headers
 import com.rails.api.core.http.HttpResponseFor
-import com.rails.api.models.users.UserCreateParams
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateParams
+import com.rails.api.models.accounts.AccountCreateResponse
 
-val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
-    .email("jane@example.com")
-    .firstName("Jane")
-    .lastName("Doe")
-    .password("your-secure-password")
+val params: AccountCreateParams = AccountCreateParams.builder()
+    .accountType(AccountCreateParams.AccountType.CHECKING)
     .build()
-val user: HttpResponseFor<UserCreateResponse> = client.users().withRawResponse().create(params)
+val account: HttpResponseFor<AccountCreateResponse> = client.accounts().withRawResponse().create(params)
 
-val statusCode: Int = user.statusCode()
-val headers: Headers = user.headers()
+val statusCode: Int = account.statusCode()
+val headers: Headers = account.headers()
 ```
 
 You can still deserialize the response into an instance of a Kotlin class if needed:
 
 ```kotlin
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateResponse
 
-val parsedUser: UserCreateResponse = user.parse()
+val parsedAccount: AccountCreateResponse = account.parse()
 ```
 
 ## Error handling
@@ -309,9 +293,9 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```kotlin
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateResponse
 
-val user: UserCreateResponse = client.users().create(
+val account: AccountCreateResponse = client.accounts().create(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
 )
 ```
@@ -449,9 +433,9 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```kotlin
 import com.rails.api.core.JsonValue
-import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.accounts.AccountCreateParams
 
-val params: UserCreateParams = UserCreateParams.builder()
+val params: AccountCreateParams = AccountCreateParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
@@ -464,14 +448,10 @@ To set a documented parameter or property to an undocumented or not yet supporte
 
 ```kotlin
 import com.rails.api.core.JsonValue
-import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.accounts.AccountCreateParams
 
-val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
-    .email(JsonValue.from(42))
-    .firstName("Jane")
-    .lastName("Doe")
-    .password("your-secure-password")
+val params: AccountCreateParams = AccountCreateParams.builder()
+    .accountType(JsonValue.from(42))
     .build()
 ```
 
@@ -516,14 +496,10 @@ To forcibly omit a required parameter or property, pass [`JsonMissing`](rails-ko
 
 ```kotlin
 import com.rails.api.core.JsonMissing
-import com.rails.api.models.users.UserCreateParams
+import com.rails.api.models.accounts.AccountCreateParams
 
-val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
-    .firstName("first_name")
-    .lastName("last_name")
-    .password("password")
-    .email(JsonMissing.of())
+val params: AccountCreateParams = AccountCreateParams.builder()
+    .accountType(JsonMissing.of())
     .build()
 ```
 
@@ -537,7 +513,7 @@ import com.rails.api.core.JsonNull
 import com.rails.api.core.JsonNumber
 import com.rails.api.core.JsonValue
 
-val additionalProperties: Map<String, JsonValue> = client.users().create(params)._additionalProperties()
+val additionalProperties: Map<String, JsonValue> = client.accounts().create(params)._additionalProperties()
 val secretPropertyValue: JsonValue = additionalProperties.get("secretProperty")
 
 val result = when (secretPropertyValue) {
@@ -553,20 +529,21 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 
 ```kotlin
 import com.rails.api.core.JsonField
+import com.rails.api.models.accounts.AccountCreateParams
 
-val email: JsonField<String> = client.users().create(params)._email()
+val accountType: JsonField<AccountCreateParams.AccountType> = client.accounts().create(params)._accountType()
 
-if (email.isMissing()) {
+if (accountType.isMissing()) {
   // The property is absent from the JSON response
-} else if (email.isNull()) {
+} else if (accountType.isNull()) {
   // The property was set to literal null
 } else {
   // Check if value was provided as a string
   // Other methods include `asNumber()`, `asBoolean()`, etc.
-  val jsonString: String? = email.asString();
+  val jsonString: String? = accountType.asString();
 
   // Try to deserialize into a custom type
-  val myObject: MyClass = email.asUnknown()!!.convert(MyClass::class.java)
+  val myObject: MyClass = accountType.asUnknown()!!.convert(MyClass::class.java)
 }
 ```
 
@@ -579,17 +556,17 @@ By default, the SDK will not throw an exception in this case. It will throw [`Ra
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```kotlin
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateResponse
 
-val user: UserCreateResponse = client.users().create(params).validate()
+val account: AccountCreateResponse = client.accounts().create(params).validate()
 ```
 
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```kotlin
-import com.rails.api.models.users.UserCreateResponse
+import com.rails.api.models.accounts.AccountCreateResponse
 
-val user: UserCreateResponse = client.users().create(
+val account: AccountCreateResponse = client.accounts().create(
   params, RequestOptions.builder().responseValidation(true).build()
 )
 ```

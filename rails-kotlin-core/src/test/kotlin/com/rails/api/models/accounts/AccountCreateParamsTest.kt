@@ -11,10 +11,13 @@ internal class AccountCreateParamsTest {
     fun create() {
         AccountCreateParams.builder()
             .accountType(AccountCreateParams.AccountType.CHECKING)
-            .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .currency("currency")
+            .email("dev@stainless.com")
             .environment("environment")
+            .firstName("first_name")
+            .lastName("last_name")
             .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .build()
     }
 
@@ -23,19 +26,25 @@ internal class AccountCreateParamsTest {
         val params =
             AccountCreateParams.builder()
                 .accountType(AccountCreateParams.AccountType.CHECKING)
-                .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .currency("currency")
+                .email("dev@stainless.com")
                 .environment("environment")
+                .firstName("first_name")
+                .lastName("last_name")
                 .organizationId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         val body = params._body()
 
         assertThat(body.accountType()).isEqualTo(AccountCreateParams.AccountType.CHECKING)
-        assertThat(body.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.currency()).isEqualTo("currency")
+        assertThat(body.email()).isEqualTo("dev@stainless.com")
         assertThat(body.environment()).isEqualTo("environment")
+        assertThat(body.firstName()).isEqualTo("first_name")
+        assertThat(body.lastName()).isEqualTo("last_name")
         assertThat(body.organizationId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 
     @Test
@@ -43,12 +52,10 @@ internal class AccountCreateParamsTest {
         val params =
             AccountCreateParams.builder()
                 .accountType(AccountCreateParams.AccountType.CHECKING)
-                .userId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
         val body = params._body()
 
         assertThat(body.accountType()).isEqualTo(AccountCreateParams.AccountType.CHECKING)
-        assertThat(body.userId()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 }

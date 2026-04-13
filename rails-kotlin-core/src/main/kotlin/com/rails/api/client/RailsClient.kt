@@ -5,7 +5,6 @@ package com.rails.api.client
 import com.rails.api.core.ClientOptions
 import com.rails.api.services.blocking.AccountService
 import com.rails.api.services.blocking.TransactionService
-import com.rails.api.services.blocking.UserService
 
 /**
  * A client for interacting with the Rails REST API synchronously. You can also switch to
@@ -43,9 +42,6 @@ interface RailsClient {
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient
 
-    /** Users */
-    fun users(): UserService
-
     /** Accounts */
     fun accounts(): AccountService
 
@@ -74,9 +70,6 @@ interface RailsClient {
          * The original service is not modified.
          */
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient.WithRawResponse
-
-        /** Users */
-        fun users(): UserService.WithRawResponse
 
         /** Accounts */
         fun accounts(): AccountService.WithRawResponse

@@ -8,8 +8,6 @@ import com.rails.api.services.blocking.AccountService
 import com.rails.api.services.blocking.AccountServiceImpl
 import com.rails.api.services.blocking.TransactionService
 import com.rails.api.services.blocking.TransactionServiceImpl
-import com.rails.api.services.blocking.UserService
-import com.rails.api.services.blocking.UserServiceImpl
 
 class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
 
@@ -28,8 +26,6 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
         WithRawResponseImpl(clientOptions)
     }
 
-    private val users: UserService by lazy { UserServiceImpl(clientOptionsWithUserAgent) }
-
     private val accounts: AccountService by lazy { AccountServiceImpl(clientOptionsWithUserAgent) }
 
     private val transactions: TransactionService by lazy {
@@ -43,9 +39,6 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClient =
         RailsClientImpl(clientOptions.toBuilder().apply(modifier).build())
 
-    /** Users */
-    override fun users(): UserService = users
-
     /** Accounts */
     override fun accounts(): AccountService = accounts
 
@@ -56,10 +49,6 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RailsClient.WithRawResponse {
-
-        private val users: UserService.WithRawResponse by lazy {
-            UserServiceImpl.WithRawResponseImpl(clientOptions)
-        }
 
         private val accounts: AccountService.WithRawResponse by lazy {
             AccountServiceImpl.WithRawResponseImpl(clientOptions)
@@ -73,9 +62,6 @@ class RailsClientImpl(private val clientOptions: ClientOptions) : RailsClient {
             modifier: (ClientOptions.Builder) -> Unit
         ): RailsClient.WithRawResponse =
             RailsClientImpl.WithRawResponseImpl(clientOptions.toBuilder().apply(modifier).build())
-
-        /** Users */
-        override fun users(): UserService.WithRawResponse = users
 
         /** Accounts */
         override fun accounts(): AccountService.WithRawResponse = accounts

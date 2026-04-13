@@ -8,8 +8,6 @@ import com.rails.api.services.async.AccountServiceAsync
 import com.rails.api.services.async.AccountServiceAsyncImpl
 import com.rails.api.services.async.TransactionServiceAsync
 import com.rails.api.services.async.TransactionServiceAsyncImpl
-import com.rails.api.services.async.UserServiceAsync
-import com.rails.api.services.async.UserServiceAsyncImpl
 
 class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClientAsync {
 
@@ -28,8 +26,6 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
         WithRawResponseImpl(clientOptions)
     }
 
-    private val users: UserServiceAsync by lazy { UserServiceAsyncImpl(clientOptionsWithUserAgent) }
-
     private val accounts: AccountServiceAsync by lazy {
         AccountServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -45,9 +41,6 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
     override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClientAsync =
         RailsClientAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
 
-    /** Users */
-    override fun users(): UserServiceAsync = users
-
     /** Accounts */
     override fun accounts(): AccountServiceAsync = accounts
 
@@ -58,10 +51,6 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         RailsClientAsync.WithRawResponse {
-
-        private val users: UserServiceAsync.WithRawResponse by lazy {
-            UserServiceAsyncImpl.WithRawResponseImpl(clientOptions)
-        }
 
         private val accounts: AccountServiceAsync.WithRawResponse by lazy {
             AccountServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -77,9 +66,6 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
             RailsClientAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier).build()
             )
-
-        /** Users */
-        override fun users(): UserServiceAsync.WithRawResponse = users
 
         /** Accounts */
         override fun accounts(): AccountServiceAsync.WithRawResponse = accounts

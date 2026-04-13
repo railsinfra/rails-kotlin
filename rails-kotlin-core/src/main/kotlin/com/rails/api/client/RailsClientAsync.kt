@@ -5,7 +5,6 @@ package com.rails.api.client
 import com.rails.api.core.ClientOptions
 import com.rails.api.services.async.AccountServiceAsync
 import com.rails.api.services.async.TransactionServiceAsync
-import com.rails.api.services.async.UserServiceAsync
 
 /**
  * A client for interacting with the Rails REST API asynchronously. You can also switch to
@@ -43,9 +42,6 @@ interface RailsClientAsync {
      */
     fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClientAsync
 
-    /** Users */
-    fun users(): UserServiceAsync
-
     /** Accounts */
     fun accounts(): AccountServiceAsync
 
@@ -74,9 +70,6 @@ interface RailsClientAsync {
          * The original service is not modified.
          */
         fun withOptions(modifier: (ClientOptions.Builder) -> Unit): RailsClientAsync.WithRawResponse
-
-        /** Users */
-        fun users(): UserServiceAsync.WithRawResponse
 
         /** Accounts */
         fun accounts(): AccountServiceAsync.WithRawResponse
