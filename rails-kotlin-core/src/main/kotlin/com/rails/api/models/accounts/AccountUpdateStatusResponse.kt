@@ -17,7 +17,7 @@ import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 
-class Account
+class AccountUpdateStatusResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
@@ -278,7 +278,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [Account].
+         * Returns a mutable builder for constructing an instance of [AccountUpdateStatusResponse].
          *
          * The following fields are required:
          * ```kotlin
@@ -295,7 +295,7 @@ private constructor(
         fun builder() = Builder()
     }
 
-    /** A builder for [Account]. */
+    /** A builder for [AccountUpdateStatusResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -313,21 +313,21 @@ private constructor(
         private var userRole: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        internal fun from(account: Account) = apply {
-            id = account.id
-            accountNumber = account.accountNumber
-            accountType = account.accountType
-            balance = account.balance
-            currency = account.currency
-            environment = account.environment
-            status = account.status
-            userId = account.userId
-            adminUserId = account.adminUserId
-            createdAt = account.createdAt
-            organizationId = account.organizationId
-            updatedAt = account.updatedAt
-            userRole = account.userRole
-            additionalProperties = account.additionalProperties.toMutableMap()
+        internal fun from(accountUpdateStatusResponse: AccountUpdateStatusResponse) = apply {
+            id = accountUpdateStatusResponse.id
+            accountNumber = accountUpdateStatusResponse.accountNumber
+            accountType = accountUpdateStatusResponse.accountType
+            balance = accountUpdateStatusResponse.balance
+            currency = accountUpdateStatusResponse.currency
+            environment = accountUpdateStatusResponse.environment
+            status = accountUpdateStatusResponse.status
+            userId = accountUpdateStatusResponse.userId
+            adminUserId = accountUpdateStatusResponse.adminUserId
+            createdAt = accountUpdateStatusResponse.createdAt
+            organizationId = accountUpdateStatusResponse.organizationId
+            updatedAt = accountUpdateStatusResponse.updatedAt
+            userRole = accountUpdateStatusResponse.userRole
+            additionalProperties = accountUpdateStatusResponse.additionalProperties.toMutableMap()
         }
 
         fun id(id: String) = id(JsonField.of(id))
@@ -494,7 +494,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [Account].
+         * Returns an immutable instance of [AccountUpdateStatusResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -512,8 +512,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): Account =
-            Account(
+        fun build(): AccountUpdateStatusResponse =
+            AccountUpdateStatusResponse(
                 checkRequired("id", id),
                 checkRequired("accountNumber", accountNumber),
                 checkRequired("accountType", accountType),
@@ -533,7 +533,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): Account = apply {
+    fun validate(): AccountUpdateStatusResponse = apply {
         if (validated) {
             return@apply
         }
@@ -844,7 +844,7 @@ private constructor(
             return true
         }
 
-        return other is Account &&
+        return other is AccountUpdateStatusResponse &&
             id == other.id &&
             accountNumber == other.accountNumber &&
             accountType == other.accountType &&
@@ -883,5 +883,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "Account{id=$id, accountNumber=$accountNumber, accountType=$accountType, balance=$balance, currency=$currency, environment=$environment, status=$status, userId=$userId, adminUserId=$adminUserId, createdAt=$createdAt, organizationId=$organizationId, updatedAt=$updatedAt, userRole=$userRole, additionalProperties=$additionalProperties}"
+        "AccountUpdateStatusResponse{id=$id, accountNumber=$accountNumber, accountType=$accountType, balance=$balance, currency=$currency, environment=$environment, status=$status, userId=$userId, adminUserId=$adminUserId, createdAt=$createdAt, organizationId=$organizationId, updatedAt=$updatedAt, userRole=$userRole, additionalProperties=$additionalProperties}"
 }
