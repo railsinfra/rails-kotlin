@@ -18,8 +18,8 @@ jobs:
   lint:
     timeout-minutes: 15
     name: lint
-    runs-on: ${{ github.repository == 'stainless-sdks/rails-kotlin' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    runs-on: ${{ github.repository == 'railsinfra/rails-kotlin' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    if: (github.event_name == 'push' || github.event_name == 'pull_request') && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
 
     steps:
       - uses: actions/checkout@v6
@@ -42,8 +42,8 @@ jobs:
   build:
     timeout-minutes: 15
     name: build
-    runs-on: ${{ github.repository == 'stainless-sdks/rails-kotlin' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: (github.event_name == 'push' || github.event.pull_request.head.repo.fork) && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
+    runs-on: ${{ github.repository == 'railsinfra/rails-kotlin' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    if: (github.event_name == 'push' || github.event_name == 'pull_request') && (github.event_name != 'push' || github.event.head_commit.message != 'codegen metadata')
 
     steps:
       - uses: actions/checkout@v6
@@ -66,8 +66,8 @@ jobs:
   test:
     timeout-minutes: 15
     name: test
-    runs-on: ${{ github.repository == 'stainless-sdks/rails-kotlin' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
+    runs-on: ${{ github.repository == 'railsinfra/rails-kotlin' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    if: github.event_name == 'push' || github.event_name == 'pull_request'
     steps:
       - uses: actions/checkout@v6
 
