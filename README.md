@@ -361,6 +361,21 @@ val client: RailsClient = RailsOkHttpClient.builder()
     .build()
 ```
 
+If the proxy responds with `407 Proxy Authentication Required`, supply credentials by also configuring `proxyAuthenticator`:
+
+```kotlin
+import com.rails.api.client.RailsClient
+import com.rails.api.client.okhttp.RailsOkHttpClient
+import com.rails.api.core.http.ProxyAuthenticator
+
+val client: RailsClient = RailsOkHttpClient.builder()
+    .fromEnv()
+    .proxy(...)
+    // Or a custom implementation of `ProxyAuthenticator`.
+    .proxyAuthenticator(ProxyAuthenticator.basic("username", "password"))
+    .build()
+```
+
 ### Connection pooling
 
 To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
