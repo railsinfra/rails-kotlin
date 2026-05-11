@@ -9,9 +9,9 @@ configure<PublishingExtension> {
             from(components["java"])
 
             pom {
-                name.set("OpenAPI 3.0 Pet Store")
-                description.set("This is a sample Pet Store Server based on the OpenAPI 3.0 specification.")
-                url.set("https://www.github.com/stainless-sdks/rails-kotlin")
+                name.set("Rails API")
+                description.set("Rails public API. All endpoints require API key (X-API-Key). Environment must be\nexplicit: use sandbox or production base URL; there is no default to production.\nUnauthenticated access is not supported.")
+                url.set("https://www.github.com/railsinfra/rails-kotlin")
 
                 licenses {
                     license {
@@ -26,9 +26,9 @@ configure<PublishingExtension> {
                 }
 
                 scm {
-                    connection.set("scm:git:git://github.com/stainless-sdks/rails-kotlin.git")
-                    developerConnection.set("scm:git:git://github.com/stainless-sdks/rails-kotlin.git")
-                    url.set("https://github.com/stainless-sdks/rails-kotlin")
+                    connection.set("scm:git:git://github.com/railsinfra/rails-kotlin.git")
+                    developerConnection.set("scm:git:git://github.com/railsinfra/rails-kotlin.git")
+                    url.set("https://github.com/railsinfra/rails-kotlin")
                 }
 
                 versionMapping {

@@ -8,8 +8,8 @@ repositories {
 }
 
 allprojects {
-    group = "com.rails.api"
-    version = "0.0.1"
+    group = "com.railsinfra"
+    version = "0.1.0" // x-release-please-version
 }
 
 subprojects {
@@ -22,7 +22,6 @@ subprojects {
         group = "Verification"
         description = "Verifies all source files are formatted."
     }
-    apply(plugin = "org.jetbrains.dokka")
 }
 
 subprojects {

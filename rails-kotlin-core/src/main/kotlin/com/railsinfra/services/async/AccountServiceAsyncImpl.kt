@@ -1,0 +1,352 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.railsinfra.services.async
+
+import com.railsinfra.core.ClientOptions
+import com.railsinfra.core.RequestOptions
+import com.railsinfra.core.checkRequired
+import com.railsinfra.core.handlers.errorBodyHandler
+import com.railsinfra.core.handlers.errorHandler
+import com.railsinfra.core.handlers.jsonHandler
+import com.railsinfra.core.http.HttpMethod
+import com.railsinfra.core.http.HttpRequest
+import com.railsinfra.core.http.HttpResponse
+import com.railsinfra.core.http.HttpResponse.Handler
+import com.railsinfra.core.http.HttpResponseFor
+import com.railsinfra.core.http.json
+import com.railsinfra.core.http.parseable
+import com.railsinfra.core.prepareAsync
+import com.railsinfra.models.accounts.Account
+import com.railsinfra.models.accounts.AccountCloseParams
+import com.railsinfra.models.accounts.AccountCreateParams
+import com.railsinfra.models.accounts.AccountDepositParams
+import com.railsinfra.models.accounts.AccountDepositResponse
+import com.railsinfra.models.accounts.AccountListParams
+import com.railsinfra.models.accounts.AccountRetrieveParams
+import com.railsinfra.models.accounts.AccountTransferParams
+import com.railsinfra.models.accounts.AccountTransferResponse
+import com.railsinfra.models.accounts.AccountUpdateStatusParams
+import com.railsinfra.models.accounts.AccountWithdrawParams
+import com.railsinfra.models.accounts.AccountWithdrawResponse
+
+/** Accounts */
+class AccountServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    AccountServiceAsync {
+
+    private val withRawResponse: AccountServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
+    override fun withRawResponse(): AccountServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: (ClientOptions.Builder) -> Unit): AccountServiceAsync =
+        AccountServiceAsyncImpl(clientOptions.toBuilder().apply(modifier).build())
+
+    override suspend fun create(
+        params: AccountCreateParams,
+        requestOptions: RequestOptions,
+    ): Account =
+        // post /api/v1/accounts
+        withRawResponse().create(params, requestOptions).parse()
+
+    override suspend fun retrieve(
+        params: AccountRetrieveParams,
+        requestOptions: RequestOptions,
+    ): Account =
+        // get /api/v1/accounts/{id}
+        withRawResponse().retrieve(params, requestOptions).parse()
+
+    override suspend fun list(
+        params: AccountListParams,
+        requestOptions: RequestOptions,
+    ): List<Account> =
+        // get /api/v1/accounts
+        withRawResponse().list(params, requestOptions).parse()
+
+    override suspend fun close(
+        params: AccountCloseParams,
+        requestOptions: RequestOptions,
+    ): Account =
+        // delete /api/v1/accounts/{id}
+        withRawResponse().close(params, requestOptions).parse()
+
+    override suspend fun deposit(
+        params: AccountDepositParams,
+        requestOptions: RequestOptions,
+    ): AccountDepositResponse =
+        // post /api/v1/accounts/{id}/deposit
+        withRawResponse().deposit(params, requestOptions).parse()
+
+    override suspend fun transfer(
+        params: AccountTransferParams,
+        requestOptions: RequestOptions,
+    ): AccountTransferResponse =
+        // post /api/v1/accounts/{id}/transfer
+        withRawResponse().transfer(params, requestOptions).parse()
+
+    override suspend fun updateStatus(
+        params: AccountUpdateStatusParams,
+        requestOptions: RequestOptions,
+    ): Account =
+        // patch /api/v1/accounts/{id}
+        withRawResponse().updateStatus(params, requestOptions).parse()
+
+    override suspend fun withdraw(
+        params: AccountWithdrawParams,
+        requestOptions: RequestOptions,
+    ): AccountWithdrawResponse =
+        // post /api/v1/accounts/{id}/withdraw
+        withRawResponse().withdraw(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        AccountServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
+
+        override fun withOptions(
+            modifier: (ClientOptions.Builder) -> Unit
+        ): AccountServiceAsync.WithRawResponse =
+            AccountServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier).build()
+            )
+
+        private val createHandler: Handler<Account> = jsonHandler<Account>(clientOptions.jsonMapper)
+
+        override suspend fun create(
+            params: AccountCreateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<Account> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val retrieveHandler: Handler<Account> =
+            jsonHandler<Account>(clientOptions.jsonMapper)
+
+        override suspend fun retrieve(
+            params: AccountRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<Account> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("id", params.id())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts", params._pathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val listHandler: Handler<List<Account>> =
+            jsonHandler<List<Account>>(clientOptions.jsonMapper)
+
+        override suspend fun list(
+            params: AccountListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<List<Account>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.forEach { it.validate() }
+                        }
+                    }
+            }
+        }
+
+        private val closeHandler: Handler<Account> = jsonHandler<Account>(clientOptions.jsonMapper)
+
+        override suspend fun close(
+            params: AccountCloseParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<Account> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("id", params.id())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts", params._pathParam(0))
+                    .apply { params._body()?.let { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { closeHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val depositHandler: Handler<AccountDepositResponse> =
+            jsonHandler<AccountDepositResponse>(clientOptions.jsonMapper)
+
+        override suspend fun deposit(
+            params: AccountDepositParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<AccountDepositResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("id", params.id())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts", params._pathParam(0), "deposit")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { depositHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val transferHandler: Handler<AccountTransferResponse> =
+            jsonHandler<AccountTransferResponse>(clientOptions.jsonMapper)
+
+        override suspend fun transfer(
+            params: AccountTransferParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<AccountTransferResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("id", params.id())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts", params._pathParam(0), "transfer")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { transferHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val updateStatusHandler: Handler<Account> =
+            jsonHandler<Account>(clientOptions.jsonMapper)
+
+        override suspend fun updateStatus(
+            params: AccountUpdateStatusParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<Account> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("id", params.id())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts", params._pathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { updateStatusHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val withdrawHandler: Handler<AccountWithdrawResponse> =
+            jsonHandler<AccountWithdrawResponse>(clientOptions.jsonMapper)
+
+        override suspend fun withdraw(
+            params: AccountWithdrawParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<AccountWithdrawResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("id", params.id())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("api", "v1", "accounts", params._pathParam(0), "withdraw")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.executeAsync(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { withdrawHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+    }
+}
