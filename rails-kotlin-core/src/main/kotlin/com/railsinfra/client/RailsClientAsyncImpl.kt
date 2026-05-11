@@ -6,6 +6,8 @@ import com.railsinfra.core.ClientOptions
 import com.railsinfra.core.getPackageVersion
 import com.railsinfra.services.async.AccountServiceAsync
 import com.railsinfra.services.async.AccountServiceAsyncImpl
+import com.railsinfra.services.async.AuditEventServiceAsync
+import com.railsinfra.services.async.AuditEventServiceAsyncImpl
 import com.railsinfra.services.async.TransactionServiceAsync
 import com.railsinfra.services.async.TransactionServiceAsyncImpl
 import com.railsinfra.services.async.UserServiceAsync
@@ -38,6 +40,10 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
         TransactionServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val auditEvents: AuditEventServiceAsync by lazy {
+        AuditEventServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     override fun sync(): RailsClient = sync
 
     override fun withRawResponse(): RailsClientAsync.WithRawResponse = withRawResponse
@@ -53,6 +59,9 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
 
     /** Transactions */
     override fun transactions(): TransactionServiceAsync = transactions
+
+    /** Audit events */
+    override fun auditEvents(): AuditEventServiceAsync = auditEvents
 
     override fun close() = clientOptions.close()
 
@@ -71,6 +80,10 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
             TransactionServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val auditEvents: AuditEventServiceAsync.WithRawResponse by lazy {
+            AuditEventServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: (ClientOptions.Builder) -> Unit
         ): RailsClientAsync.WithRawResponse =
@@ -86,5 +99,8 @@ class RailsClientAsyncImpl(private val clientOptions: ClientOptions) : RailsClie
 
         /** Transactions */
         override fun transactions(): TransactionServiceAsync.WithRawResponse = transactions
+
+        /** Audit events */
+        override fun auditEvents(): AuditEventServiceAsync.WithRawResponse = auditEvents
     }
 }
