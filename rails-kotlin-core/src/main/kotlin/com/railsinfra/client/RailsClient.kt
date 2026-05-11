@@ -4,6 +4,7 @@ package com.railsinfra.client
 
 import com.railsinfra.core.ClientOptions
 import com.railsinfra.services.blocking.AccountService
+import com.railsinfra.services.blocking.AuditEventService
 import com.railsinfra.services.blocking.TransactionService
 import com.railsinfra.services.blocking.UserService
 
@@ -52,6 +53,9 @@ interface RailsClient {
     /** Transactions */
     fun transactions(): TransactionService
 
+    /** Audit events */
+    fun auditEvents(): AuditEventService
+
     /**
      * Closes this client, relinquishing any underlying resources.
      *
@@ -83,5 +87,8 @@ interface RailsClient {
 
         /** Transactions */
         fun transactions(): TransactionService.WithRawResponse
+
+        /** Audit events */
+        fun auditEvents(): AuditEventService.WithRawResponse
     }
 }
