@@ -11,7 +11,7 @@ dependencies {
 application {
     // Use `./gradlew :rails-kotlin-example:run` to run `Main`
     // Use `./gradlew :rails-kotlin-example:run -Pexample=Something` to run `SomethingExample`
-    mainClass = "com.rails.api.example.${
+    mainClass = "com.railsinfra.example.${
         if (project.hasProperty("example"))
             "${project.property("example")}ExampleKt"
         else
