@@ -115,20 +115,20 @@ private constructor(
     /**
      * The base URL to use for every request.
      *
-     * Defaults to the staging environment: `https://rails-client-server-staging.up.railway.app`.
+     * Defaults to the production environment: `https://www.api.railsinfra.com`.
      *
      * The following other environments, with dedicated builder methods, are available:
-     * - production: `https://www.api.railsinfra.com`
+     * - staging: `https://rails-client-server-staging.up.railway.app`
      */
-    fun baseUrl(): String = baseUrl ?: STAGING_URL
+    fun baseUrl(): String = baseUrl ?: PRODUCTION_URL
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        const val STAGING_URL = "https://rails-client-server-staging.up.railway.app"
-
         const val PRODUCTION_URL = "https://www.api.railsinfra.com"
+
+        const val STAGING_URL = "https://rails-client-server-staging.up.railway.app"
 
         /**
          * Returns a mutable builder for constructing an instance of [ClientOptions].
@@ -235,16 +235,15 @@ private constructor(
         /**
          * The base URL to use for every request.
          *
-         * Defaults to the staging environment:
-         * `https://rails-client-server-staging.up.railway.app`.
+         * Defaults to the production environment: `https://www.api.railsinfra.com`.
          *
          * The following other environments, with dedicated builder methods, are available:
-         * - production: `https://www.api.railsinfra.com`
+         * - staging: `https://rails-client-server-staging.up.railway.app`
          */
         fun baseUrl(baseUrl: String?) = apply { this.baseUrl = baseUrl }
 
-        /** Sets [baseUrl] to `https://www.api.railsinfra.com`. */
-        fun production() = baseUrl(PRODUCTION_URL)
+        /** Sets [baseUrl] to `https://rails-client-server-staging.up.railway.app`. */
+        fun staging() = baseUrl(STAGING_URL)
 
         /**
          * Whether to call `validate` on every response before returning it.
@@ -391,10 +390,10 @@ private constructor(
          *
          * See this table for the available options:
          *
-         * |Setter   |System property|Environment variable|Required|Default value                                         |
-         * |---------|---------------|--------------------|--------|------------------------------------------------------|
-         * |`apiKey` |`rails.apiKey` |`RAILS_API_KEY`     |true    |-                                                     |
-         * |`baseUrl`|`rails.baseUrl`|`RAILS_BASE_URL`    |true    |`"https://rails-client-server-staging.up.railway.app"`|
+         * |Setter   |System property|Environment variable|Required|Default value                     |
+         * |---------|---------------|--------------------|--------|----------------------------------|
+         * |`apiKey` |`rails.apiKey` |`RAILS_API_KEY`     |true    |-                                 |
+         * |`baseUrl`|`rails.baseUrl`|`RAILS_BASE_URL`    |true    |`"https://www.api.railsinfra.com"`|
          *
          * System properties take precedence over environment variables.
          */
