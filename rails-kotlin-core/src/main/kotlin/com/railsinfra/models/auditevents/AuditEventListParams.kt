@@ -25,6 +25,7 @@ private constructor(
     private val targetId: String?,
     private val targetType: String?,
     private val to: OffsetDateTime?,
+    private val xEnvironment: XEnvironment?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
@@ -47,6 +48,8 @@ private constructor(
     fun targetType(): String? = targetType
 
     fun to(): OffsetDateTime? = to
+
+    fun xEnvironment(): XEnvironment? = xEnvironment
 
     /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -76,6 +79,7 @@ private constructor(
         private var targetId: String? = null
         private var targetType: String? = null
         private var to: OffsetDateTime? = null
+        private var xEnvironment: XEnvironment? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -89,6 +93,7 @@ private constructor(
             targetId = auditEventListParams.targetId
             targetType = auditEventListParams.targetType
             to = auditEventListParams.to
+            xEnvironment = auditEventListParams.xEnvironment
             additionalHeaders = auditEventListParams.additionalHeaders.toBuilder()
             additionalQueryParams = auditEventListParams.additionalQueryParams.toBuilder()
         }
@@ -125,6 +130,8 @@ private constructor(
         fun targetType(targetType: String?) = apply { this.targetType = targetType }
 
         fun to(to: OffsetDateTime?) = apply { this.to = to }
+
+        fun xEnvironment(xEnvironment: XEnvironment?) = apply { this.xEnvironment = xEnvironment }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -240,12 +247,19 @@ private constructor(
                 targetId,
                 targetType,
                 to,
+                xEnvironment,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
     }
 
-    override fun _headers(): Headers = additionalHeaders
+    override fun _headers(): Headers =
+        Headers.builder()
+            .apply {
+                xEnvironment?.let { put("X-Environment", it.toString()) }
+                putAll(additionalHeaders)
+            }
+            .build()
 
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
@@ -262,6 +276,142 @@ private constructor(
                 putAll(additionalQueryParams)
             }
             .build()
+
+    class XEnvironment @JsonCreator private constructor(private val value: JsonField<String>) :
+        Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            val SANDBOX = of("sandbox")
+
+            val PRODUCTION = of("production")
+
+            fun of(value: String) = XEnvironment(JsonField.of(value))
+        }
+
+        /** An enum containing [XEnvironment]'s known values. */
+        enum class Known {
+            SANDBOX,
+            PRODUCTION,
+        }
+
+        /**
+         * An enum containing [XEnvironment]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [XEnvironment] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            SANDBOX,
+            PRODUCTION,
+            /**
+             * An enum member indicating that [XEnvironment] was instantiated with an unknown value.
+             */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                SANDBOX -> Value.SANDBOX
+                PRODUCTION -> Value.PRODUCTION
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws RailsInvalidDataException if this class instance's value is a not a known member.
+         */
+        fun known(): Known =
+            when (this) {
+                SANDBOX -> Known.SANDBOX
+                PRODUCTION -> Known.PRODUCTION
+                else -> throw RailsInvalidDataException("Unknown XEnvironment: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws RailsInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString() ?: throw RailsInvalidDataException("Value is not a String")
+
+        private var validated: Boolean = false
+
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws RailsInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
+        fun validate(): XEnvironment = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: RailsInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is XEnvironment && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
 
     /** Environment to list audit events from. Defaults to sandbox when omitted. */
     class Environment @JsonCreator private constructor(private val value: JsonField<String>) :
@@ -554,6 +704,7 @@ private constructor(
             targetId == other.targetId &&
             targetType == other.targetType &&
             to == other.to &&
+            xEnvironment == other.xEnvironment &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
@@ -569,10 +720,11 @@ private constructor(
             targetId,
             targetType,
             to,
+            xEnvironment,
             additionalHeaders,
             additionalQueryParams,
         )
 
     override fun toString() =
-        "AuditEventListParams{action=$action, environment=$environment, from=$from, outcome=$outcome, page=$page, perPage=$perPage, targetId=$targetId, targetType=$targetType, to=$to, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "AuditEventListParams{action=$action, environment=$environment, from=$from, outcome=$outcome, page=$page, perPage=$perPage, targetId=$targetId, targetType=$targetType, to=$to, xEnvironment=$xEnvironment, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
