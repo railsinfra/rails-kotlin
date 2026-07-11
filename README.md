@@ -559,7 +559,6 @@ import com.railsinfra.core.JsonMissing
 import com.railsinfra.models.users.UserCreateParams
 
 val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
     .firstName("first_name")
     .lastName("last_name")
     .password("password")
