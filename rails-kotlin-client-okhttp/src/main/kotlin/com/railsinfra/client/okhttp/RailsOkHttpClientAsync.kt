@@ -188,11 +188,11 @@ class RailsOkHttpClientAsync private constructor() {
          * `https://rails-client-server-staging.up.railway.app`.
          *
          * The following other environments, with dedicated builder methods, are available:
-         * - production: `https://rails-client-server-production.up.railway.app`
+         * - production: `https://www.api.railsinfra.com`
          */
         fun baseUrl(baseUrl: String?) = apply { clientOptions.baseUrl(baseUrl) }
 
-        /** Sets [baseUrl] to `https://rails-client-server-production.up.railway.app`. */
+        /** Sets [baseUrl] to `https://www.api.railsinfra.com`. */
         fun production() = apply { clientOptions.production() }
 
         /**
