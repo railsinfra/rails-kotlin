@@ -2,18 +2,20 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.railsinfra/rails-kotlin)](https://central.sonatype.com/artifact/com.railsinfra/rails-kotlin/0.1.1)
-[![javadoc](https://javadoc.io/badge2/com.railsinfra/rails-kotlin/0.1.1/javadoc.svg)](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.1.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.railsinfra/rails-kotlin)](https://central.sonatype.com/artifact/com.railsinfra/rails-kotlin/0.2.0)
+[![javadoc](https://javadoc.io/badge2/com.railsinfra/rails-kotlin/javadoc.svg)](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.2.0)
 
 <!-- x-release-please-end -->
 
 The Rails Kotlin SDK provides convenient access to the Rails REST API from applications written in Kotlin.
 
+The Rails Kotlin SDK is similar to the Rails Java SDK but with minor differences that make it more ergonomic for use in Kotlin, such as nullable values instead of `Optional`, `Sequence` instead of `Stream`, and suspend functions instead of `CompletableFuture`.
+
 It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-KDocs are available on [javadoc.io](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.1.1).
+KDocs are available on [javadoc.io](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.2.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +26,7 @@ KDocs are available on [javadoc.io](https://javadoc.io/doc/com.railsinfra/rails-
 ### Gradle
 
 ```kotlin
-implementation("com.railsinfra:rails-kotlin:0.1.1")
+implementation("com.railsinfra:rails-kotlin:0.2.0")
 ```
 
 ### Maven
@@ -33,7 +35,7 @@ implementation("com.railsinfra:rails-kotlin:0.1.1")
 <dependency>
   <groupId>com.railsinfra</groupId>
   <artifactId>rails-kotlin</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
@@ -105,10 +107,10 @@ val client: RailsClient = RailsOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter    | System property | Environment variable | Required | Default value                                          |
-| --------- | --------------- | -------------------- | -------- | ------------------------------------------------------ |
-| `apiKey`  | `rails.apiKey`  | `RAILS_API_KEY`      | true     | -                                                      |
-| `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://rails-client-server-staging.up.railway.app"` |
+| Setter    | System property | Environment variable | Required | Default value                      |
+| --------- | --------------- | -------------------- | -------- | ---------------------------------- |
+| `apiKey`  | `rails.apiKey`  | `RAILS_API_KEY`      | true     | -                                  |
+| `baseUrl` | `rails.baseUrl` | `RAILS_BASE_URL`     | true     | `"https://www.api.railsinfra.com"` |
 
 System properties take precedence over environment variables.
 
@@ -429,7 +431,7 @@ val client: RailsClient = RailsOkHttpClient.builder()
 
 ### Environments
 
-The SDK sends requests to the staging by default. To send requests to a different environment, configure the client like so:
+The SDK sends requests to the production by default. To send requests to a different environment, configure the client like so:
 
 ```kotlin
 import com.railsinfra.client.RailsClient
@@ -437,7 +439,7 @@ import com.railsinfra.client.okhttp.RailsOkHttpClient
 
 val client: RailsClient = RailsOkHttpClient.builder()
     .fromEnv()
-    .production()
+    .staging()
     .build()
 ```
 
@@ -557,7 +559,6 @@ import com.railsinfra.core.JsonMissing
 import com.railsinfra.models.users.UserCreateParams
 
 val params: UserCreateParams = UserCreateParams.builder()
-    .xEnvironment(UserCreateParams.XEnvironment.SANDBOX)
     .firstName("first_name")
     .lastName("last_name")
     .password("password")
