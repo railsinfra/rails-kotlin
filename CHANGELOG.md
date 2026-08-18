@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.2.0 (2026-08-18)
+
+Full Changelog: [v0.1.1...v0.2.0](https://github.com/railsinfra/rails-kotlin/compare/v0.1.1...v0.2.0)
+
+### Features
+
+* **api:** api update ([0907c06](https://github.com/railsinfra/rails-kotlin/commit/0907c066feb3b70c066f1cf7769e5917957010c5))
+* **api:** manual updates ([449dbcc](https://github.com/railsinfra/rails-kotlin/commit/449dbccd39fa55e34fb448f7afbae466f84bb778))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([c88f64f](https://github.com/railsinfra/rails-kotlin/commit/c88f64fd044f7e163efc97396d9cf0ab516a4a6d))
+
+
+### Bug Fixes
+
+* set production as default environment for docs snippets ([8de3b24](https://github.com/railsinfra/rails-kotlin/commit/8de3b242eb321e5ef07f0f280b2c98ebd6df5350))
+
+
+### Chores
+
+* **config:** update production sdk base url to www.api.railsinfra.com ([83de639](https://github.com/railsinfra/rails-kotlin/commit/83de639faba0cda934e4181315506d1699b32fb0))
+* **internal:** codegen related update ([0a3a8af](https://github.com/railsinfra/rails-kotlin/commit/0a3a8affa33635b57f545fe724563b988f89e535))
+* **internal:** codegen related update ([e59216f](https://github.com/railsinfra/rails-kotlin/commit/e59216f93d484488fba11b5c9ac26268bd147307))
+
 ## 0.1.1 (2026-05-13)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/railsinfra/rails-kotlin/compare/v0.1.0...v0.1.1)

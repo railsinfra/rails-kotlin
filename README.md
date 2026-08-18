@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.railsinfra/rails-kotlin)](https://central.sonatype.com/artifact/com.railsinfra/rails-kotlin/0.1.1)
-[![javadoc](https://javadoc.io/badge2/com.railsinfra/rails-kotlin/javadoc.svg)](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.1.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.railsinfra/rails-kotlin)](https://central.sonatype.com/artifact/com.railsinfra/rails-kotlin/0.2.0)
+[![javadoc](https://javadoc.io/badge2/com.railsinfra/rails-kotlin/javadoc.svg)](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.2.0)
 
 <!-- x-release-please-end -->
 
@@ -15,7 +15,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-KDocs are available on [javadoc.io](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.1.1).
+KDocs are available on [javadoc.io](https://javadoc.io/doc/com.railsinfra/rails-kotlin/0.2.0).
 
 <!-- x-release-please-end -->
 
@@ -26,7 +26,7 @@ KDocs are available on [javadoc.io](https://javadoc.io/doc/com.railsinfra/rails-
 ### Gradle
 
 ```kotlin
-implementation("com.railsinfra:rails-kotlin:0.1.1")
+implementation("com.railsinfra:rails-kotlin:0.2.0")
 ```
 
 ### Maven
@@ -35,7 +35,7 @@ implementation("com.railsinfra:rails-kotlin:0.1.1")
 <dependency>
   <groupId>com.railsinfra</groupId>
   <artifactId>rails-kotlin</artifactId>
-  <version>0.1.1</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
